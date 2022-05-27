@@ -1,0 +1,16 @@
+name: Notify SRE team in Slack
+env:
+  SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+   
+on:
+  pull_request:
+    types: [review_requested]
+jobs:
+  specific_review_requested:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.assignee.team == 'sre-team' || github.event.assignee.requested_reviewer == 'sre-team' }}
+    steps:
+      - name: 'Send slack notification'
+        uses: pullreminders/slack-action@master
+        with:
+      - run: echo 'A review from octo-team was requested'
